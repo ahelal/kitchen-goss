@@ -18,6 +18,7 @@ Gem::Specification.new do |gem|
   gem.rubyforge_project = '[none]'
   gem.description       = <<-EOF
 == DESCRIPTION:
+
 GOSS is a tool for validating a server's configuration. 
 This kitchen plugin adds Goss support as a validation to test-kitchen.
 
