@@ -1,0 +1,11 @@
+file:
+  /blaaa:
+    exists: true
+    mode: "1777"
+    owner: root
+    group: root
+    filetype: directory
+    contains: []
+process:
+  sshds:
+    running: true

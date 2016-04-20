@@ -1,0 +1,19 @@
+file:
+  /tmp:
+    exists: true
+    mode: "1777"
+    owner: root
+    group: root
+    filetype: directory
+    contains: []
+user:
+  vagrant:
+    exists: true
+    uid: 1000
+    gid: 1000
+    groups:
+    - vagrant
+    home: /home/vagrant
+process:
+  sshd:
+    running: true
