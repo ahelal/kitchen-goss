@@ -1,4 +1,6 @@
 # kitchen-goss
+[![Gem Version](https://badge.fury.io/rb/kitchen-goss.svg)](https://badge.fury.io/rb/kitchen-goss)
+
 A test-kitchen verifier plugin for GOSS 
 
 ## Intro
