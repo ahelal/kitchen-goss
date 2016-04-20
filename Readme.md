@@ -1,4 +1,4 @@
-# kitchen-ansiblepush
+# kitchen-goss
 A test-kitchen verifier plugin for GOSS 
 
 ## Intro
@@ -37,6 +37,20 @@ default_config :custom_install_command, nil
 default_config :goss_link, "https://github.com/aelsabbahy/goss/releases/download/$VERSION/goss-${DISTRO}-${ARCH}"
 default_config :goss_download_path, "/tmp/goss-${VERSION}-${DISTRO}-${ARCH}"
 ```
+
+## Test structure
+Lets say you have a suite name **simple**
+the following structure we be required.
+```bash
+.kitchen.yml
+test/
+  \_integration/
+    \_simple/
+      \_goss/
+        \_test1.yml
+        |_test2.yml
+```
+
 
 ##License
 
