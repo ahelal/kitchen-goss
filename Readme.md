@@ -3,7 +3,8 @@ A test-kitchen verifier plugin for GOSS
 
 ## Intro
 [GOSS](https://github.com/aelsabbahy/goss.git) is a tool for validating a server's configuration. 
-This kitchen plugin adds Goss support as a validation to kitchen.
+This kitchen plugin adds Goss support as a validation to kitchen. Since GOSS is written in GO lang. This plugin use sftp to push tests to remote machines no ruby is needed to run verify.
+
 
 ## How to install 
 
