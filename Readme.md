@@ -1,6 +1,7 @@
 # kitchen-goss
 [![Gem Version](https://badge.fury.io/rb/kitchen-goss.svg)](https://badge.fury.io/rb/kitchen-goss)
 [![Gem Downloads](http://ruby-gem-downloads-badge.herokuapp.com/kitchen-goss?type=total&color=brightgreen)](https://rubygems.org/gems/kitchen-goss)
+
 A test-kitchen verifier plugin for GOSS 
 
 ## Intro
