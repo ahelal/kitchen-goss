@@ -45,6 +45,7 @@ default_config :goss_download_path, "/tmp/goss-${VERSION}-${DISTRO}-${ARCH}"
 ## Test structure
 Lets say you have a suite name **simple**
 the following structure we be required.
+
 ```bash
 .kitchen.yml
 test/
@@ -56,6 +57,6 @@ test/
 ```
 
 
-##License
+## License
 
 MIT
