@@ -12,6 +12,7 @@ module Kitchen
 
       #
       default_config :sleep, 0
+      default_config :use_sudo, false
       default_config :goss_version, "v0.1.5"
       default_config :validate_output, "documentation"
       default_config :custom_install_command, nil
@@ -31,7 +32,7 @@ module Kitchen
           #{goss_filename_flags}
           download_url="#{config[:goss_link]}"
           goss_download_path="#{config[:goss_download_path]}"
-          
+
           ## Check do we need to download GOSS
           if [ -f "/${goss_download_path}" ]; then
             echo "GOSS is installed in ${goss_download_path}"
@@ -147,6 +148,7 @@ module Kitchen
       # @return [String] the run command to execute tests
       # @api private
       def run_test_command
+        command = config[:use_sudo] == false ? config[:goss_download_path] : "sudo #{config[:goss_download_path]}"
         <<-CMD
           if [ ! -x "#{config[:goss_download_path]}" ]; then
               echo "Something failed cant execute '${command}'"
@@ -156,7 +158,7 @@ module Kitchen
           test_failed=0
           for VARIABLE in #{get_test_name}
           do
-            #{config[:goss_download_path]} -g ${VARIABLE} ${command_validate_opts}
+            #{command} -g ${VARIABLE} ${command_validate_opts}
             if [ "$?" -ne 0 ]; then
               test_failed=1
             fi
