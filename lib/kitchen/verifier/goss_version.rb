@@ -2,6 +2,6 @@
 
 module Kitchen
   module Verifier
-    GOSS_VERSION = '0.0.2'
+    GOSS_VERSION = '0.1.0'
   end
 end
