@@ -2,14 +2,14 @@
 [![Gem Version](https://badge.fury.io/rb/kitchen-goss.svg)](https://badge.fury.io/rb/kitchen-goss)
 [![Gem Downloads](http://ruby-gem-downloads-badge.herokuapp.com/kitchen-goss?type=total&color=brightgreen)](https://rubygems.org/gems/kitchen-goss)
 
-A test-kitchen verifier plugin for GOSS 
+A test-kitchen verifier plugin for GOSS
 
 ## Intro
-[GOSS](https://github.com/aelsabbahy/goss.git) is a tool for validating a server's configuration. 
+[GOSS](https://github.com/aelsabbahy/goss.git) is a tool for validating a server's configuration.
 This kitchen plugin adds Goss support as a validation to kitchen. Since GOSS is written in GO lang. This plugin use sftp to push tests to remote machines no ruby is needed to run verify.
 
 
-## How to install 
+## How to install
 
 ### Ruby gem
 ```
@@ -17,7 +17,7 @@ gem install kitchen-goss
 ```
 
 ### To install from code or develop
-``` 
+```
 git clone git@github.com:ahelal/kitchen-goss.git
 cd kitchen-goss
 gem build kitchen-goss.gemspec
@@ -35,6 +35,8 @@ Besides the normal config in kitchen.yml goss validation can accept the followin
 
 ```ruby
 default_config :sleep, 0
+default_config :use_sudo, false
+default_config :env_vars, {}
 default_config :goss_version, "v0.1.5"
 default_config :validate_output, "documentation"
 default_config :custom_install_command, nil
