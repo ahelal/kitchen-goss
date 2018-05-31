@@ -13,6 +13,7 @@ module Kitchen
       #
       default_config :sleep, 0
       default_config :use_sudo, false
+      default_config :env_vars, {}
       default_config :goss_version, "v0.1.5"
       default_config :validate_output, "documentation"
       default_config :custom_install_command, nil
@@ -145,10 +146,18 @@ module Kitchen
         File.join(sandbox_path, "suites")
       end
 
+      def env_vars
+        return nil if config[:env_vars].none?
+        config[:env_vars].map { |k, v| "#{k}=#{v}" }.join(' ')
+      end
+
       # @return [String] the run command to execute tests
       # @api private
       def run_test_command
-        command = config[:use_sudo] == false ? config[:goss_download_path] : "sudo #{config[:goss_download_path]}"
+        command = config[:goss_download_path]
+        command = "sudo -E #{command}" if !config[:use_sudo] == true
+        command = "#{env_vars} #{command}" if !config[:env_vars].none?
+
         <<-CMD
           if [ ! -x "#{config[:goss_download_path]}" ]; then
               echo "Something failed cant execute '${command}'"
