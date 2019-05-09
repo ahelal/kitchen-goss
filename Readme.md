@@ -28,6 +28,12 @@ gem install kitchen-goss-<version>.gem
 ```yaml
 verifier                    :
   name                      : "goss"
+  sleep                     : 0
+  use_sudo                  : true
+  goss_version              : "v0.3.6"
+  goss_link                 : "https://github.com/aelsabbahy/goss/releases/download/$VERSION/goss-linux-${ARCH}"
+  goss_var_path             : "common.yml"
+  env_vars                  : {"test_uid": 123}
 ```
 
 ## kitchen.yml options
@@ -42,6 +48,7 @@ default_config :validate_output, "documentation"
 default_config :custom_install_command, nil
 default_config :goss_link, "https://github.com/aelsabbahy/goss/releases/download/$VERSION/goss-${DISTRO}-${ARCH}"
 default_config :goss_download_path, "/tmp/goss-${VERSION}-${DISTRO}-${ARCH}"
+default_config :goss_var_path, nil
 ```
 
 ## Test structure
@@ -57,6 +64,7 @@ test/
       \_goss/
         \_test1.yml
         |_test2.yml
+        |_common.yml  # --vars common.yml with .Vars render, not for goss test
 ```
 
 

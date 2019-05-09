@@ -14,6 +14,13 @@ user:
     groups:
     - vagrant
     home: /home/vagrant
+  {{ .Vars.username }}:
+    exists: true
+    uid: {{ .Vars.user_uid }}
+    gid: {{ .Vars.group_gid }}
+  test:
+    exists: true
+    uid: {{ .Env.test_uid }}
 process:
   sshd:
     running: true
