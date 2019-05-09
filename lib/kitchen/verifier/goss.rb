@@ -4,7 +4,7 @@ module Kitchen
   module Verifier
     class Goss < Kitchen::Verifier::Base
       require 'mixlib/shellout'
-      require "kitchen/util"
+      require 'kitchen/util'
       require 'pathname'
 
       kitchen_verifier_api_version 1
@@ -14,11 +14,11 @@ module Kitchen
       default_config :sleep, 0
       default_config :use_sudo, false
       default_config :env_vars, {}
-      default_config :goss_version, "v0.1.5"
-      default_config :validate_output, "documentation"
+      default_config :goss_version, 'v0.3.6'
+      default_config :validate_output, 'documentation'
       default_config :custom_install_command, nil
-      default_config :goss_link, "https://github.com/aelsabbahy/goss/releases/download/$VERSION/goss-${DISTRO}-${ARCH}"
-      default_config :goss_download_path, "/tmp/goss-${VERSION}-${DISTRO}-${ARCH}"
+      default_config :goss_link, 'https://github.com/aelsabbahy/goss/releases/download/$VERSION/goss-${DISTRO}-${ARCH}'
+      default_config :goss_download_path, '/tmp/goss-${VERSION}-${DISTRO}-${ARCH}'
       default_config :goss_var_path, nil
 
       def install_command
@@ -55,7 +55,7 @@ module Kitchen
       # (see Base#init_command)
       def init_command
         return if local_suite_files.empty?
-        debug("Remove root_path on remote server.")
+        debug('Remove root_path on remote server.')
         <<-CMD
           suite_dir="#{config[:root_path]}"
           if [ "${suite_dir}" = "x" ]; then
@@ -75,19 +75,19 @@ module Kitchen
       # @raise [ActionFailed] if the action could not be completed
       def call(state)
         create_sandbox
-        sandbox_dirs = Dir.glob(File.join(sandbox_path, "*"))
+        sandbox_dirs = Dir.glob(File.join(sandbox_path, '*'))
 
         instance.transport.connection(state) do |conn|
           conn.execute(install_command)
           conn.execute(init_command)
           info("Transferring files to #{instance.to_str}")
           conn.upload(sandbox_dirs, config[:root_path])
-          debug("Transfer complete")
+          debug('Transfer complete')
           conn.execute(prepare_command)
           conn.execute(run_command)
         end
       rescue Kitchen::Transport::TransportFailed => ex
-        if ex.message .include? "<TEST EXECUTION FAILED>"
+        if ex.message .include? '<TEST EXECUTION FAILED>'
           raise ActionFailed, "Action #verify failed for #{instance.to_str}."
         else
           raise ActionFailed, ex.message
@@ -100,7 +100,7 @@ module Kitchen
       def run_command
         return if local_suite_files.empty?
 
-        debug("Running tests")
+        debug('Running tests')
         prefix_command(wrap_shell_code(Util.outdent!(<<-CMD)))
           set +e
           #{goss_filename_flags}
@@ -116,9 +116,9 @@ module Kitchen
         base = File.join(config[:test_base_path], config[:suite_name])
 
         local_suite_files.each do |src|
-          dest = File.join(sandbox_suites_dir, src.sub("#{base}/", ""))
+          dest = File.join(sandbox_suites_dir, src.sub("#{base}/", ''))
           FileUtils.mkdir_p(File.dirname(dest))
-          FileUtils.cp(src, dest, :preserve => true)
+          FileUtils.cp(src, dest, preserve: true)
         end
       end
 
@@ -130,8 +130,8 @@ module Kitchen
       # @api private
       def local_suite_files
         base = File.join(config[:test_base_path], config[:suite_name])
-        glob = File.join(base, "goss/**/*")
-        #testfiles = Dir.glob(glob).reject { |f| File.directory?(f) }
+        glob = File.join(base, 'goss/**/*')
+        # testfiles = Dir.glob(glob).reject { |f| File.directory?(f) }
         Dir.glob(glob).reject { |f| File.directory?(f) }
       end
 
@@ -144,7 +144,7 @@ module Kitchen
       # @return [String] path to suites directory under sandbox path
       # @api private
       def sandbox_suites_dir
-        File.join(sandbox_path, "suites")
+        File.join(sandbox_path, 'suites')
       end
 
       def env_vars
@@ -154,7 +154,7 @@ module Kitchen
 
       def remote_var_file
         base_path = File.join(config[:test_base_path], config[:suite_name])
-        remote_base_path = File.join(config[:root_path], "suites")
+        remote_base_path = File.join(config[:root_path], 'suites')
         result = ''
         local_suite_files.each do |src|
           if File.basename(src) == config[:goss_var_path]
@@ -169,7 +169,7 @@ module Kitchen
       def run_test_command
         command = config[:goss_download_path]
         command = "sudo -E #{command}" if !config[:use_sudo] == true
-        command = "#{env_vars} #{command}" if !config[:env_vars].none?
+        command = "#{env_vars} #{command}" if config[:env_vars].any?
         command = "#{command} --vars #{remote_var_file}" if config[:goss_var_path]
         puts command
 
@@ -198,7 +198,7 @@ module Kitchen
       end
 
       def goss_filename_flags
-          <<-CMD
+        <<-CMD
            ## Set the flags for GOSS command path
            VERSION="#{config[:goss_version]}"
            DISTRO="$(uname)"
@@ -235,11 +235,11 @@ module Kitchen
 
       def get_test_name
         base_path = File.join(config[:test_base_path], config[:suite_name])
-        remote_base_path = File.join(config[:root_path], "suites")
-        all_tests = ""
+        remote_base_path = File.join(config[:root_path], 'suites')
+        all_tests = ''
         local_suite_files.each do |test_file|
-          if File.basename(test_file) != config[:goss_var_path] and File.basename(test_file).end_with?(".yml")
-              all_tests += " " +  test_file.sub(base_path, remote_base_path)
+          if File.basename(test_file) != config[:goss_var_path] && File.basename(test_file).end_with?('.yml')
+            all_tests += ' ' + test_file.sub(base_path, remote_base_path)
             end
         end
         all_tests
@@ -254,7 +254,6 @@ module Kitchen
           sleep 1
         end
       end
-
     end
   end
 end
