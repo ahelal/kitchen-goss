@@ -169,8 +169,9 @@ module Kitchen
       def run_test_command
         command = config[:goss_download_path]
         command = "sudo -E #{command}" if !config[:use_sudo] == true
-        command = "#{command} --vars #{remote_var_file}" if config[:goss_var_path]
         command = "#{env_vars} #{command}" if !config[:env_vars].none?
+        command = "#{command} --vars #{remote_var_file}" if config[:goss_var_path]
+        puts command
 
         <<-CMD
           if [ ! -x "#{config[:goss_download_path]}" ]; then
@@ -207,6 +208,28 @@ module Kitchen
            else
              ARCH="386"
            fi
+
+            if [ -f /etc/os-release ]; then
+
+              if [ "$(grep -i 'ubuntu' /etc/os-release)" != ""  ]; then
+                OS="ubuntu"
+              fi
+              if [ "$(grep -i 'centos' /etc/os-release)" != "" ]; then
+                OS="centos"
+              fi
+              if [ "$(grep -i '7' /etc/os-release)" != "" ]; then
+                VER='7'
+              fi
+              if [ "$(grep -i '16.04' /etc/os-release)" != "" ]; then
+                VER='16.04'
+              fi
+            else
+              OS="centos"
+              VER="6"
+            fi
+
+            OS_VERSION=${OS}${VER}
+            echo $OS_VERSION
           CMD
       end
 
@@ -215,7 +238,7 @@ module Kitchen
         remote_base_path = File.join(config[:root_path], "suites")
         all_tests = ""
         local_suite_files.each do |test_file|
-          if File.basename(test_file) != config[:goss_var_path]
+          if File.basename(test_file) != config[:goss_var_path] and File.basename(test_file).end_with?(".yml")
               all_tests += " " +  test_file.sub(base_path, remote_base_path)
             end
         end
