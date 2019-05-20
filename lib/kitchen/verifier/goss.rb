@@ -168,7 +168,7 @@ module Kitchen
       # @api private
       def run_test_command
         command = config[:goss_download_path]
-        command = "sudo -E #{command}" if !config[:use_sudo] == true
+        command = "sudo -E #{command}" if config[:use_sudo] == true
         command = "#{env_vars} #{command}" if !config[:env_vars].none?
         command = "#{command} --vars #{remote_var_file}" if config[:goss_var_path]
         puts command
@@ -220,12 +220,15 @@ module Kitchen
               if [ "$(grep -i '7' /etc/os-release)" != "" ]; then
                 VER='7'
               fi
+              if [ "$(grep -i '6' /etc/os-release)" != "" ]; then
+                VER='6'
+              fi
               if [ "$(grep -i '16.04' /etc/os-release)" != "" ]; then
                 VER='16.04'
               fi
             else
-              OS="centos"
-              VER="6"
+              OS="linux"
+              VER="2019"
             fi
 
             OS_VERSION=${OS}${VER}
